@@ -19,9 +19,9 @@ class Mortgage(object) :
         self.housevalue = housevalue
         self.rate = (rate/100. + 1.)**(1./12)
         self.term = term * 12
-        self.initloan = loan
-        self.loan = loan
-        self.cashbalance = cashback
+        self.initloan = float(loan)
+        self.loan = float(loan)
+        self.cashbalance = float(cashback)
         if borrowfee :
             self.loan += fee
         else :
@@ -88,7 +88,7 @@ class Mortgage(object) :
     def __str__(self) :
         '''Get a human readable string reperesentation of the mortgage.'''
         
-        return '''{0:<20} : {1}
+        return '''{0:<20} : {1:.2f}
 {2:<20} : {3:.2f}
 {4:<20} : {5:.2f}
 {6:<20} : {7:.2f}
@@ -138,10 +138,9 @@ class MortgageSequence(Mortgage) :
         of years that the mortgage will be used for. The term of the final mortgage
         is calculated as the total term minus the sum of terms of the preceding mortgages.'''
         
-        self.housevalue = housevalue
+        self.housevalue = float(housevalue)
         self.term = term * 12
-        self.initloan = loan
-        self.loan = loan
+        self.initloan = float(loan)
         self.cashbalance = 0.
         
         self.mortgages = []
@@ -157,6 +156,8 @@ class MortgageSequence(Mortgage) :
             remainingloan = mortgage.remaining_loan(mortgageinfo['term'] * 12)
             self.cashbalance += mortgage.cashbalance
             
+        self.loan = self.mortgages[0][1].loan
+        
         self.mortgages[-1][0] = self.term - sum(term for term, mort in self.mortgages[:-1])
 
         self.calc_repayment()
