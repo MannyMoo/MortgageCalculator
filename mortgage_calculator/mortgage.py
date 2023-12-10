@@ -123,7 +123,8 @@ class Mortgage(object) :
                             'Total paid', self.repayment * npayments,
                             'Total paid/initial loan', self.repayment * npayments / self.initloan,
                             'Effective rate [%]', effrate)
-        print summary
+        print(summary)
+
 
 class MortgageSequence(Mortgage) :
     '''A sequence of mortgages with different parameters.'''

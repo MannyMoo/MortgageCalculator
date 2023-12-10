@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "mortgage-calculator"
+version = "0.1.0"
+description = "Tools for comparing mortgages with & without fees"
+authors = ["Michael Alexander <airstream.driver@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.2"
+pytest-cov = "^4.1.0"
+
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^4.0.9"
+pre-commit = "^3.4.0"
+ipykernel = "^6.25.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
