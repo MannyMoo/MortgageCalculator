@@ -6,7 +6,7 @@ class Mortgage(object):
 
     __slots__ = ("housevalue", "initloan", "loan", "rate", "term", "cashbalance", "repayment")
 
-    def __init__(self, housevalue, loan, rate, term, fee, cashback=0.0, borrowfee=True):
+    def __init__(self, housevalue, loan, rate, term, fee, cashback=0.0, borrowfee=True, repayment: float | None = None):
         """housevalue : value of the house you're borrowing against in GBP (or any currency).
         loan : amount you're borrowing.
         rate : interest rate in %.
@@ -27,7 +27,10 @@ class Mortgage(object):
         else:
             self.cashbalance -= fee
 
-        self.calc_repayment()
+        if repayment is None:
+            self.calc_repayment()
+        else:
+            self.repayment = repayment
 
     def calc_repayment(self):
         """Calculate the monthly repayment. This reproduces within < 1 % what I get
@@ -119,6 +122,7 @@ class Mortgage(object):
         summary = str(self)
         loan = self.remaining_loan(npayments)
         effrate = self.effective_rate_after(npayments)
+        total_paid = self.repayment * npayments - self.cashbalance
         summary += "\n - After " + str(npayments) + " payments:"
         summary += """
 {0:<20} : {1:.2f}
@@ -131,9 +135,9 @@ class Mortgage(object):
             "Remaining loan/initial loan",
             loan / self.initloan,
             "Total paid",
-            self.repayment * npayments,
+            total_paid,
             "Total paid/initial loan",
-            self.repayment * npayments / self.initloan,
+            total_paid / self.initloan,
             "Effective rate [%]",
             effrate,
         )
